@@ -116,6 +116,8 @@ class ShokzDownloader:
             
             if is_playlist:
                 for entry in result.get('entries', []):
+                    if self.is_cancelled:
+                        break
                     if entry:
                         # Improved logic to find the resulting MP3 file
                         base_path = ydl.prepare_filename(entry)

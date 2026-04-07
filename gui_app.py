@@ -17,6 +17,7 @@ class ShokzFlowApp(ctk.CTk):
         self.geometry("700x550")
 
         self.output_path = tk.StringVar(value=os.path.join(os.path.expanduser("~"), "Music"))
+        self.downloader = None
 
         # UI Components
         self.header_label = ctk.CTkLabel(self, text="ShokzFlow", font=ctk.CTkFont(size=24, weight="bold"))
@@ -60,10 +61,18 @@ class ShokzFlowApp(ctk.CTk):
         self.bitrate_320 = ctk.CTkRadioButton(self.options_frame, text="320 (MAX)", variable=self.bitrate_var, value="320")
         self.bitrate_320.pack(side="left", padx=10)
 
-        # Download Button
-        self.download_button = ctk.CTkButton(self, text="DOWNLOAD", command=self.start_download, 
-                                             font=ctk.CTkFont(size=16, weight="bold"), height=40)
-        self.download_button.pack(pady=20)
+        # Action Buttons Frame
+        self.button_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.button_frame.pack(pady=20)
+
+        self.download_button = ctk.CTkButton(self.button_frame, text="DOWNLOAD", command=self.start_download, 
+                                             font=ctk.CTkFont(size=16, weight="bold"), height=40, width=200)
+        self.download_button.pack(side="left", padx=10)
+
+        self.stop_button = ctk.CTkButton(self.button_frame, text="STOP", command=self.stop_download, 
+                                         font=ctk.CTkFont(size=16, weight="bold"), height=40, width=100,
+                                         fg_color="crimson", hover_color="#8B0000", state="disabled")
+        self.stop_button.pack(side="left", padx=10)
 
         # Progress Bar
         self.progress_bar = ctk.CTkProgressBar(self, width=600)
@@ -105,6 +114,7 @@ class ShokzFlowApp(ctk.CTk):
             return
 
         self.download_button.configure(state="disabled")
+        self.stop_button.configure(state="normal")
         self.progress_bar.set(0)
         self.log_status("Starting background thread...")
         
@@ -115,20 +125,34 @@ class ShokzFlowApp(ctk.CTk):
         thread.daemon = True
         thread.start()
 
+    def stop_download(self):
+        if self.downloader:
+            self.downloader.is_cancelled = True
+            self.log_status("Stopping process... Please wait.")
+            self.stop_button.configure(state="disabled")
+
     def download_wrapper(self, url, destination, bitrate):
         try:
-            downloader = ShokzDownloader(
+            self.downloader = ShokzDownloader(
                 callback_progress=self.update_progress,
                 callback_status=self.log_status,
                 resource_path=self.resource_path
             )
-            downloader.download(url, destination, bitrate)
-            messagebox.showinfo("Success", "Download and conversion finished!")
+            self.downloader.download(url, destination, bitrate)
+            if not self.downloader.is_cancelled:
+                messagebox.showinfo("Success", "Download and conversion finished!")
+            else:
+                self.log_status("Download stopped by user.")
         except Exception as e:
-            self.log_status(f"Error: {e}")
-            messagebox.showerror("Download Error", str(e))
+            if "cancelled" in str(e).lower():
+                self.log_status("Process stopped.")
+            else:
+                self.log_status(f"Error: {e}")
+                messagebox.showerror("Download Error", str(e))
         finally:
+            self.downloader = None
             self.download_button.configure(state="normal")
+            self.stop_button.configure(state="disabled")
 
 if __name__ == "__main__":
     def dummy_resource_path(p): return p
