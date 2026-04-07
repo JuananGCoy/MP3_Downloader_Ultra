@@ -46,20 +46,42 @@ class ShokzFlowApp(ctk.CTk):
         self.browse_button = ctk.CTkButton(self.folder_frame, text="Browse", command=self.browse_folder)
         self.browse_button.pack(side="right", padx=10)
 
-        # Bitrate Options
+        # Format and Quality Selection
         self.options_frame = ctk.CTkFrame(self)
         self.options_frame.pack(fill="x", padx=40, pady=10)
         
-        self.bitrate_label = ctk.CTkLabel(self.options_frame, text="Bitrate (kbps):")
-        self.bitrate_label.pack(side="left", padx=10)
+        # Format Selector (MP3/MP4)
+        self.format_label = ctk.CTkLabel(self.options_frame, text="Format:")
+        self.format_label.pack(side="left", padx=10)
         
-        self.bitrate_var = ctk.StringVar(value="320")
-        self.bitrate_192 = ctk.CTkRadioButton(self.options_frame, text="192", variable=self.bitrate_var, value="192")
-        self.bitrate_192.pack(side="left", padx=10)
-        self.bitrate_256 = ctk.CTkRadioButton(self.options_frame, text="256", variable=self.bitrate_var, value="256")
-        self.bitrate_256.pack(side="left", padx=10)
-        self.bitrate_320 = ctk.CTkRadioButton(self.options_frame, text="320 (MAX)", variable=self.bitrate_var, value="320")
-        self.bitrate_320.pack(side="left", padx=10)
+        self.format_var = ctk.StringVar(value="MP3")
+        self.format_switch = ctk.CTkSegmentedButton(self.options_frame, values=["MP3", "MP4"], 
+                                                     variable=self.format_var, command=self.toggle_format_options)
+        self.format_switch.pack(side="left", padx=10)
+
+        # Container for dynamic options (Bitrate or Resolution)
+        self.quality_frame = ctk.CTkFrame(self.options_frame, fg_color="transparent")
+        self.quality_frame.pack(side="left", padx=20, fill="x", expand=True)
+        
+        # We will populate this in toggle_format_options
+        self.toggle_format_options("MP3")
+
+    def toggle_format_options(self, selected_format):
+        # Clear existing quality options
+        for widget in self.quality_frame.winfo_children():
+            widget.destroy()
+
+        if selected_format == "MP3":
+            ctk.CTkLabel(self.quality_frame, text="Bitrate:").pack(side="left", padx=5)
+            self.quality_var = ctk.StringVar(value="320")
+            for br in ["192", "256", "320"]:
+                lbl = f"{br} (MAX)" if br == "320" else br
+                ctk.CTkRadioButton(self.quality_frame, text=lbl, variable=self.quality_var, value=br).pack(side="left", padx=5)
+        else:
+            ctk.CTkLabel(self.quality_frame, text="Resolution:").pack(side="left", padx=5)
+            self.quality_var = ctk.StringVar(value="best")
+            for res in ["360p", "720p", "1080p", "best"]:
+                ctk.CTkRadioButton(self.quality_frame, text=res, variable=self.quality_var, value=res).pack(side="left", padx=5)
 
         # Action Buttons Frame
         self.button_frame = ctk.CTkFrame(self, fg_color="transparent")
@@ -118,10 +140,11 @@ class ShokzFlowApp(ctk.CTk):
         self.progress_bar.set(0)
         self.log_status("Starting background thread...")
         
-        bitrate = self.bitrate_var.get()
+        format_type = self.format_var.get().lower()
+        quality = self.quality_var.get()
         
         # Run in a separate thread
-        thread = threading.Thread(target=self.download_wrapper, args=(url, destination, bitrate))
+        thread = threading.Thread(target=self.download_wrapper, args=(url, destination, format_type, quality))
         thread.daemon = True
         thread.start()
 
@@ -131,16 +154,16 @@ class ShokzFlowApp(ctk.CTk):
             self.log_status("Stopping process... Please wait.")
             self.stop_button.configure(state="disabled")
 
-    def download_wrapper(self, url, destination, bitrate):
+    def download_wrapper(self, url, destination, format_type, quality):
         try:
             self.downloader = ShokzDownloader(
                 callback_progress=self.update_progress,
                 callback_status=self.log_status,
                 resource_path=self.resource_path
             )
-            self.downloader.download(url, destination, bitrate)
+            self.downloader.download(url, destination, format_type=format_type, quality=quality)
             if not self.downloader.is_cancelled:
-                messagebox.showinfo("Success", "Download and conversion finished!")
+                messagebox.showinfo("Success", f"Download finished ({format_type.upper()})!")
             else:
                 self.log_status("Download stopped by user.")
         except Exception as e:

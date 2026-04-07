@@ -65,7 +65,7 @@ class ShokzDownloader:
         except Exception as e:
             print(f"Error embedding metadata: {e}")
 
-    def download(self, url, output_dir, bitrate='192'):
+    def download(self, url, output_dir, format_type='mp3', quality='320'):
         if not self.check_ffmpeg():
             raise Exception("FFmpeg not found. Please install FFmpeg and add it to your PATH.")
 
@@ -77,29 +77,43 @@ class ShokzDownloader:
 
         # Base options
         ydl_opts = {
-            'format': 'bestaudio/best',
             'ffmpeg_location': os.path.dirname(self.ffmpeg_exe) if os.path.exists(self.ffmpeg_exe) else None,
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                # If bitrate is '320', use VBR 0 for maximum quality. Otherwise use CBR.
-                'preferredquality': '0' if bitrate == '320' else bitrate,
-            }, {
-                'key': 'FFmpegMetadata',
-                'add_metadata': True,
-            }],
             'progress_hooks': [self.progress_hook],
             'writethumbnail': False,
             'quiet': True,
             'no_warnings': True,
             'noprogress': True,
             'ignoreerrors': True,
-            # Force high quality resampling if needed
-            'postprocessor_args': [
-                '-ar', '44100',
-                '-ac', '2'
-            ]
         }
+
+        if format_type == 'mp3':
+            ydl_opts.update({
+                'format': 'bestaudio/best',
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '0' if quality == '320' else quality,
+                }, {
+                    'key': 'FFmpegMetadata',
+                    'add_metadata': True,
+                }],
+                'postprocessor_args': [
+                    '-ar', '44100',
+                    '-ac', '2'
+                ]
+            })
+        else:
+            # MP4 Video logic
+            if quality == 'best':
+                fmt = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+            else:
+                h = quality.replace('p', '')
+                fmt = f'bestvideo[height<={h}][ext=mp4]+bestaudio[ext=m4a]/best[height<={h}][ext=mp4]/best'
+            
+            ydl_opts.update({
+                'format': fmt,
+                'merge_output_format': 'mp4',
+            })
 
         if is_playlist:
             playlist_name = info.get('title', 'Playlist').replace('/', '_').replace('\\', '_')
@@ -119,16 +133,18 @@ class ShokzDownloader:
                     if self.is_cancelled:
                         break
                     if entry:
-                        # Improved logic to find the resulting MP3 file
+                        # Find the resulting file
                         base_path = ydl.prepare_filename(entry)
-                        filepath = os.path.splitext(base_path)[0] + '.mp3'
-                        if os.path.exists(filepath):
+                        ext = 'mp3' if format_type == 'mp3' else 'mp4'
+                        filepath = os.path.splitext(base_path)[0] + f'.{ext}'
+                        if os.path.exists(filepath) and format_type == 'mp3':
                             entry['playlist_title'] = playlist_name
                             self.post_process_metadata(filepath, entry)
             else:
                 base_path = ydl.prepare_filename(result)
-                filepath = os.path.splitext(base_path)[0] + '.mp3'
-                if os.path.exists(filepath):
+                ext = 'mp3' if format_type == 'mp3' else 'mp4'
+                filepath = os.path.splitext(base_path)[0] + f'.{ext}'
+                if os.path.exists(filepath) and format_type == 'mp3':
                     self.post_process_metadata(filepath, result)
 
         if self.callback_status:

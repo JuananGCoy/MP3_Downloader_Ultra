@@ -3,7 +3,7 @@
 </p>
 
 # ShokzFlow - MP3 Downloader 🎵
-**La solución definitiva para descargar música en alta calidad, optimizada para tus Shokz OpenSwim Pro y deportistas.**
+**La solución definitiva para descargar música y vídeos en alta calidad, optimizada para tus Shokz OpenSwim Pro y deportistas.**
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
@@ -15,7 +15,8 @@
 ¿Cansado de descargar música para tus **Shokz OpenSwim Pro** y que las pistas se desordenen, el audio suene "roto" o la interfaz sea lenta?
 
 **ShokzFlow** ha sido diseñado buscando la perfección técnica:
-*   **Audio sin fisuras**: Soporte para **VBR 0 / 320kbps (MAX Quality)** con re-muestreo a 44.1kHz para máxima compatibilidad con hardware deportivo.
+*   **Audio sin fisuras**: Soporte para **VBR 0 / 320kbps (MAX Quality)** con re-muestreo a 44.1kHz.
+*   **Vídeo MP4**: Ahora puedes descargar vídeos completos eligiendo la resolución (360p hasta 1080p o máxima calidad).
 *   **Inteligencia de Orden**: El modo "Shokz" antepone numeración `01 - `, `02 - ` automáticamente basándose en el orden real de la playlist.
 *   **Experiencia Premium**: Sin anuncios, código abierto y en un ejecutable portable.
 
