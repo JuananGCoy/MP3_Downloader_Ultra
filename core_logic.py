@@ -70,7 +70,7 @@ class ShokzDownloader:
             raise Exception("FFmpeg not found. Please install FFmpeg and add it to your PATH.")
 
         # Determine if it's a playlist
-        ydl_opts_info = {'extract_flat': True}
+        ydl_opts_info = {'extract_flat': True, 'ignoreerrors': True}
         with yt_dlp.YoutubeDL(ydl_opts_info) as ydl:
             info = ydl.extract_info(url, download=False)
             is_playlist = 'entries' in info
@@ -93,6 +93,7 @@ class ShokzDownloader:
             'quiet': True,
             'no_warnings': True,
             'noprogress': True,
+            'ignoreerrors': True,
             # Force high quality resampling if needed
             'postprocessor_args': [
                 '-ar', '44100',
