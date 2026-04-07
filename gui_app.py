@@ -8,18 +8,18 @@ from core_logic import ShokzDownloader
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
-class MP3DownloaderApp(ctk.CTk):
+class ShokzFlowApp(ctk.CTk):
     def __init__(self, resource_path):
         super().__init__()
         self.resource_path = resource_path
 
-        self.title("MP3 Downloader Ultra - High Quality")
+        self.title("ShokzFlow - MP3 Downloader")
         self.geometry("700x550")
 
         self.output_path = tk.StringVar(value=os.path.join(os.path.expanduser("~"), "Music"))
 
         # UI Components
-        self.header_label = ctk.CTkLabel(self, text="MP3 Downloader Ultra", font=ctk.CTkFont(size=24, weight="bold"))
+        self.header_label = ctk.CTkLabel(self, text="ShokzFlow", font=ctk.CTkFont(size=24, weight="bold"))
         self.header_label.pack(pady=20)
 
         # URL Input
@@ -132,5 +132,5 @@ class MP3DownloaderApp(ctk.CTk):
 
 if __name__ == "__main__":
     def dummy_resource_path(p): return p
-    app = MP3DownloaderApp(dummy_resource_path)
+    app = ShokzFlowApp(dummy_resource_path)
     app.mainloop()

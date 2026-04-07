@@ -1,32 +1,40 @@
 <p align="center">
-  <img src="assets/logo.png" alt="MP3 Downloader Ultra Logo" width="200" />
+  <img src="assets/logo.png" alt="ShokzFlow Logo" width="200" />
 </p>
 
-# MP3 Downloader Ultra 🎵
-**La solución definitiva para descargar música en alta calidad, sin anuncios y optimizada para tus Shokz OpenSwim Pro.**
+# ShokzFlow - MP3 Downloader 🎵
+**La solución definitiva para descargar música en alta calidad, optimizada para tus Shokz OpenSwim Pro y deportistas.**
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
-[![Downloads](https://img.shields.io/github/downloads/JuananGCoy/MP3_Downloader_Ultra/total)](https://github.com/JuananGCoy/MP3_Downloader_Ultra/releases)
+[![Downloads](https://img.shields.io/github/downloads/JuananGCoy/ShokzFlow/total)](https://github.com/JuananGCoy/MP3_Downloader_Ultra/releases)
 
 ---
 
 ## 🌊 El Problema y la Solución
-¿Cansado de descargar música para tus **Shokz OpenSwim Pro** y que las pistas se desordenen, el audio suene "roto" o la interfaz esté llena de anuncios engañosos?
+¿Cansado de descargar música para tus **Shokz OpenSwim Pro** y que las pistas se desordenen, el audio suene "roto" o la interfaz sea lenta?
 
-**MP3 Downloader Ultra** ha sido diseñado específicamente para nadadores y amantes de la música que buscan la perfección:
-*   **Problema**: Audio de baja calidad (bitrate pobre).
-*   **Solución**: Soporte para **VBR 0 / 320kbps (MAX Quality)** con re-muestreo a 44.1kHz.
-*   **Problema**: Listas de reproducción desordenadas.
-*   **Solución**: Modo "Shokz" que antepone `01 - `, `02 - ` automáticamente según el orden de la lista.
-*   **Problema**: Complejidad y virus.
-*   **Solución**: Un único ejecutable portable, **100% código abierto** y sin instalaciones externas.
+**ShokzFlow** ha sido diseñado buscando la perfección técnica:
+*   **Audio sin fisuras**: Soporte para **VBR 0 / 320kbps (MAX Quality)** con re-muestreo a 44.1kHz para máxima compatibilidad con hardware deportivo.
+*   **Inteligencia de Orden**: El modo "Shokz" antepone numeración `01 - `, `02 - ` automáticamente basándose en el orden real de la playlist.
+*   **Experiencia Premium**: Sin anuncios, código abierto y en un ejecutable portable.
 
 ---
 
-## 📸 Captura de Pantalla
+## 📸 Interfaz de Usuario
 <p align="center">
-  <img src="assets/screenshot.png" alt="MP3 Downloader Ultra Interface" width="600" />
+  <img src="assets/screenshot.png" alt="ShokzFlow Interface" width="600" />
+</p>
+
+---
+
+## ☕ Apoya el proyecto
+Si te gusta ShokzFlow y te ahorra tiempo y dolores de cabeza, puedes invitarme a un café. ¡Toda ayuda es bienvenida para seguir mejorando la herramienta!
+
+<p align="center">
+  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=juantoba1995@gmail.com&item_name=Donación+para+ShokzFlow&currency_code=EUR">
+    <img src="https://img.shields.io/badge/PayPal-Donar-blue?style=for-the-badge&logo=paypal" alt="Donar via PayPal" />
+  </a>
 </p>
 
 ---
@@ -34,45 +42,25 @@
 ## 🚀 Instalación y Uso
 
 ### 👤 Para Usuarios (Uso RÁPIDO)
-Si solo quieres descargar música y nadar:
+Si solo quieres disfrutar de tu música:
 1.  Ve a la sección de [Releases](https://github.com/JuananGCoy/MP3_Downloader_Ultra/releases).
-2.  Descarga el archivo `MP3_Downloader_Ultra.exe`.
-3.  Ábrelo y ¡listo! No necesitas instalar nada más.
+2.  Descarga `ShokzFlow.exe`.
+3.  Ábrelo y ¡listo! Portable y limpio.
 
-### 💻 Para Desarrolladores (Contribución)
-Si quieres jugar con el código o mejorarlo:
-1.  Clona el repositorio:
-    ```bash
-    git clone https://github.com/JuananGCoy/MP3_Downloader_Ultra.git
-    cd MP3_Downloader_Ultra
-    ```
-2.  Instala las dependencias:
-    ```bash
-    pip install -r requirements.txt
-    ```
-3.  Asegúrate de tener `ffmpeg.exe` y `ffprobe.exe` en la carpeta raíz (necesarios para la conversión de audio).
-4.  Ejecuta la app:
-    ```bash
-    python main.py
-    ```
+### 💻 Para Desarrolladores
+1.  Clona el repositorio: `git clone https://github.com/JuananGCoy/MP3_Downloader_Ultra.git`
+2.  Instala dependencias: `pip install -r requirements.txt`
+3.  Asegúrate de incluir `ffmpeg.exe` y `ffprobe.exe` en la raíz.
+4.  Ejecuta con `python main.py`.
 
 ---
 
-## 🔨 Cómo compilar tu propio .exe
-Si has hecho cambios y quieres generar tu propio ejecutable portable:
-1.  Asegúrate de que `ffmpeg.exe` esté en la raíz.
-2.  Ejecuta el script de construcción:
-    ```bash
-    python build_app.py
-    ```
-3.  Recoge tu archivo en la carpeta `dist`.
-
----
-
-## 📜 Licencia
-Este proyecto está bajo la Licencia MIT. ¡Siéntete libre de usarlo, mejorarlo y distribuirlo!
+## 🔨 Compilación
+Para generar tu propio portable:
+1.  Ejecuta `python build_app.py`.
+2.  Tu ejecutable aparecerá en la carpeta `dist`.
 
 ---
 <p align="center">
-  Hecho con ❤️ para la comunidad de natación por <b>Juanan el mejor</b>.
+  Hecho con ❤️ por <b>Juanan el mejor</b>.
 </p>

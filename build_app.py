@@ -48,7 +48,7 @@ def build():
         f"--add-data={ctk_path};customtkinter/",
         "--add-data=ffmpeg.exe;.",
         "--add-data=ffprobe.exe;.",
-        "--name=MP3_Downloader_Ultra",
+        "--name=ShokzFlow",
         "main.py"
     ]
 
