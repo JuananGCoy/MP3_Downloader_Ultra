@@ -1,0 +1,27 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / build
+build/
+dist/
+local_settings.py
+*.spec
+
+# FFmpeg binaries
+ffmpeg.exe
+ffprobe.exe
+ffplay.exe
+ffmpeg-*/
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# User-specific files
+.idea/
+.vscode/
+*.swp
+*.bak
