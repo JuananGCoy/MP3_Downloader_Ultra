@@ -62,8 +62,34 @@ class ShokzFlowApp(ctk.CTk):
         # Container for dynamic options (Bitrate or Resolution)
         self.quality_frame = ctk.CTkFrame(self.options_frame, fg_color="transparent")
         self.quality_frame.pack(side="left", padx=20, fill="x", expand=True)
+
+        # Action Buttons Frame (Static)
+        self.button_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.button_frame.pack(pady=20)
+
+        self.download_button = ctk.CTkButton(self.button_frame, text="DOWNLOAD", command=self.start_download, 
+                                             font=ctk.CTkFont(size=16, weight="bold"), height=40, width=200)
+        self.download_button.pack(side="left", padx=10)
+
+        self.stop_button = ctk.CTkButton(self.button_frame, text="STOP", command=self.stop_download, 
+                                         font=ctk.CTkFont(size=16, weight="bold"), height=40, width=100,
+                                         fg_color="crimson", hover_color="#8B0000", state="disabled")
+        self.stop_button.pack(side="left", padx=10)
+
+        # Progress Bar (Static)
+        self.progress_bar = ctk.CTkProgressBar(self, width=600)
+        self.progress_bar.pack(pady=10)
+        self.progress_bar.set(0)
+
+        # Status Console (Static)
+        self.status_label = ctk.CTkLabel(self, text="Ready", font=ctk.CTkFont(size=12))
+        self.status_label.pack(pady=5)
         
-        # We will populate this in toggle_format_options
+        self.console = ctk.CTkTextbox(self, height=120, width=600, font=ctk.CTkFont(size=11))
+        self.console.pack(pady=10)
+        self.console.configure(state="disabled")
+        
+        # Initialize format options
         self.toggle_format_options("MP3")
 
     def toggle_format_options(self, selected_format):
@@ -82,32 +108,6 @@ class ShokzFlowApp(ctk.CTk):
             self.quality_var = ctk.StringVar(value="best")
             for res in ["360p", "720p", "1080p", "best"]:
                 ctk.CTkRadioButton(self.quality_frame, text=res, variable=self.quality_var, value=res).pack(side="left", padx=5)
-
-        # Action Buttons Frame
-        self.button_frame = ctk.CTkFrame(self, fg_color="transparent")
-        self.button_frame.pack(pady=20)
-
-        self.download_button = ctk.CTkButton(self.button_frame, text="DOWNLOAD", command=self.start_download, 
-                                             font=ctk.CTkFont(size=16, weight="bold"), height=40, width=200)
-        self.download_button.pack(side="left", padx=10)
-
-        self.stop_button = ctk.CTkButton(self.button_frame, text="STOP", command=self.stop_download, 
-                                         font=ctk.CTkFont(size=16, weight="bold"), height=40, width=100,
-                                         fg_color="crimson", hover_color="#8B0000", state="disabled")
-        self.stop_button.pack(side="left", padx=10)
-
-        # Progress Bar
-        self.progress_bar = ctk.CTkProgressBar(self, width=600)
-        self.progress_bar.pack(pady=10)
-        self.progress_bar.set(0)
-
-        # Status Console
-        self.status_label = ctk.CTkLabel(self, text="Ready", font=ctk.CTkFont(size=12))
-        self.status_label.pack(pady=5)
-        
-        self.console = ctk.CTkTextbox(self, height=120, width=600, font=ctk.CTkFont(size=11))
-        self.console.pack(pady=10)
-        self.console.configure(state="disabled")
 
     def browse_folder(self):
         folder = filedialog.askdirectory()
